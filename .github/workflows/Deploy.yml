@@ -19,3 +19,21 @@ jobs:
              run: dotnet restore ./CloudAPI/CloudAPI.sln
            - name: Build
              run: dotnet build ./CloudAPI/CloudAPI.sln --configuration Release --no-restore
+
+        # Publish to folder
+           - name: Publish
+             run: dotnet publish ./CloudAPI/CloudAPI.sln --configuration Release --no-build --output ./publish
+        
+        # Login to Azure with Service Principal
+           - name: 'Login via Azure CLI'
+             uses: azure/login@v1
+             with:
+                creds: ${{ secrets.AZURE_CREDENTIALS }} # Service Principal credentials stored in GitHub Secrets
+        # Diploy to azure Web App
+           - name: 'Deploy to Azure Web App'
+             uses: azure/webapps-deploy@v2
+             with:
+                app-name: 'CloudAPI' # Name of the Azure Web App
+                #slot-name: 'production'
+                publish-profile: ${{ secrets.AZUREAPPPROFILE }} # Service Principle stored in GitHub Secrets
+                package: ./publish # Path to the published output folder
