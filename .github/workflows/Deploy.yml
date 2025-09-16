@@ -1,0 +1,21 @@
+
+# Github Action to deploy to Azure Web App
+
+name: Deploy to Azure Web App
+
+on:
+    workflow_dispatch:
+
+jobs:
+    build:
+        runs-on: windows-latest
+        steps:
+            uses: actions/checkout@v3
+            name: setup .Net Core
+            uses: actions/setup-dotnet@v3
+            with:
+                dotnet-version: '8.0.x' 
+            name: Install dependencies
+            run: dotnet restore ./CloudAPI/CloudAPI.csproj
+            name: Build
+            run: dotnet build ./CloudAPI/CloudAPI.csproj --configuration Release --no-restore
