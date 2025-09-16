@@ -16,6 +16,6 @@ jobs:
              with:
                 dotnet-version: '8.0.x' 
            - name: Install dependencies
-             run: dotnet restore ./CloudAPI/CloudAPI.csproj
+             run: dotnet restore ./CloudAPI.sln
            - name: Build
-             run: dotnet build ./CloudAPI/CloudAPI.csproj --configuration Release --no-restore
+             run: dotnet build ./CloudAPI.sln --configuration Release --no-restore
